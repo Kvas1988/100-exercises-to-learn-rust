@@ -11,26 +11,46 @@ pub struct Ticket {
 
 impl Ticket {
     pub fn new(title: String, description: String, status: String) -> Ticket {
-        if title.is_empty() {
-            panic!("Title cannot be empty");
-        }
-        if title.len() > 50 {
-            panic!("Title cannot be longer than 50 bytes");
-        }
-        if description.is_empty() {
-            panic!("Description cannot be empty");
-        }
-        if description.len() > 500 {
-            panic!("Description cannot be longer than 500 bytes");
-        }
-        if status != "To-Do" && status != "In Progress" && status != "Done" {
-            panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
-        }
+        Ticket::val_title_is_empty(&title);
+        Ticket::val_title_len(&title);
+        Ticket::val_desc_is_empty(&description);
+        Ticket::val_desc_len(&description);
+        Ticket::val_status_val(&status);
 
         Ticket {
             title,
             description,
             status,
+        }
+    }
+
+    fn val_title_is_empty(title: &String) {
+        if title.is_empty() {
+            panic!("Title cannot be empty");
+        }
+    }
+
+    fn val_title_len(title: &String) {
+        if title.len() > 50 {
+            panic!("Title cannot be longer than 50 bytes");
+        }
+    }
+
+    fn val_desc_is_empty(description: &String) {
+        if description.is_empty() {
+            panic!("Description cannot be empty");
+        }
+    }
+
+    fn val_desc_len(description: &String) {
+        if description.len() > 500 {
+            panic!("Description cannot be longer than 500 bytes");
+        }
+    }
+
+    fn val_status_val(status: &String) {
+        if status != "To-Do" && status != "In Progress" && status != "Done" {
+            panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
         }
     }
 
@@ -44,6 +64,23 @@ impl Ticket {
 
     pub fn status(&self) -> &String {
         &self.status
+    }
+
+    pub fn set_title(&mut self, new_title: String) {
+        Ticket::val_title_len(&new_title);
+        Ticket::val_title_is_empty(&new_title);
+        self.title = new_title;
+    }
+
+    pub fn set_description(&mut self, new_desc: String) {
+        Ticket::val_desc_len(&new_desc);
+        Ticket::val_desc_is_empty(&new_desc);
+        self.description = new_desc;
+    }
+
+    pub fn set_status(&mut self, new_status: String) {
+        Ticket::val_status_val(&new_status);
+        self.status = new_status;
     }
 }
 
